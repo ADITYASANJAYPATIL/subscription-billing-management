@@ -1,4 +1,5 @@
 from django.contrib.auth.models import Group, User
+from rest_framework.authtoken.models import Token
 from django.core.management.base import BaseCommand
 
 from accounts.models import CustomerProfile
@@ -24,6 +25,7 @@ class Command(BaseCommand):
             admin_user.save()
 
         admin_user.groups.add(admin_group)
+        Token.objects.get_or_create(user=admin_user)
 
         customer_user, customer_created = User.objects.get_or_create(
             username="customer_test",
@@ -41,6 +43,7 @@ class Command(BaseCommand):
         CustomerProfile.objects.get_or_create(
             user=customer_user
         )
+        Token.objects.get_or_create(user=customer_user)
 
         self.stdout.write(
             self.style.SUCCESS(
