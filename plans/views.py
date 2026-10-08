@@ -34,9 +34,13 @@ class PlanDetailView(generics.RetrieveUpdateDestroyAPIView):
         return [IsAuthenticated()]
 
     def get_queryset(self):
-        return SubscriptionPlan.objects.all()
+        if self.request.user.groups.filter(name="Admin").exists():
+            return SubscriptionPlan.objects.all()
+
+        return SubscriptionPlan.objects.filter(
+            is_active=True
+        )
 
     def perform_destroy(self, instance):
         instance.is_active = False
         instance.save(update_fields=["is_active"])
-        
