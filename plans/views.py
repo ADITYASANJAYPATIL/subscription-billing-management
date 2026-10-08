@@ -16,6 +16,9 @@ class PlanListCreateView(generics.ListCreateAPIView):
         return [IsAuthenticated()]
 
     def get_queryset(self):
+        if self.request.user.groups.filter(name="Admin").exists():
+            return SubscriptionPlan.objects.all().order_by("name")
+
         return SubscriptionPlan.objects.filter(
             is_active=True
         ).order_by("name")
