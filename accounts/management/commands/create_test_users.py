@@ -1,6 +1,8 @@
 from django.contrib.auth.models import Group, User
 from django.core.management.base import BaseCommand
 
+from accounts.models import CustomerProfile
+
 
 class Command(BaseCommand):
     help = "Create development test users for Admin and Customer roles."
@@ -36,9 +38,13 @@ class Command(BaseCommand):
             customer_user.save()
 
         customer_user.groups.add(customer_group)
+        CustomerProfile.objects.get_or_create(
+            user=customer_user
+        )
 
         self.stdout.write(
             self.style.SUCCESS(
                 "Development test users created/configured successfully."
             )
         )
+        
