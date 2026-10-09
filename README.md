@@ -41,7 +41,7 @@ Install the following before running the project:
 ### Step 1: Clone the repository
 
 ```bash
-git clone <YOUR_GIT_REPOSITORY_URL>
+git clone https://github.com/ADITYASANJAYPATIL/subscription-billing-management.git
 cd subscription-billing-management
 ```
 
@@ -99,7 +99,7 @@ python manage.py runserver
 
 Open the application at:
 
-http://127.0.0.1:8000/
+http://127.0.0.1:8000/login/
 
 Use the configured login page to sign in.
 
