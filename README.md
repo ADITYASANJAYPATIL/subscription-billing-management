@@ -45,7 +45,6 @@ git clone https://github.com/ADITYASANJAYPATIL/subscription-billing-management.g
 cd subscription-billing-management
 ```
 
-Replace the placeholder with your actual repository URL.
 
 If you already have the project downloaded, open its project directory instead.
 
@@ -223,7 +222,7 @@ Payment processing is simulated; the application does not charge real money.
 
 ## 12. Project Structure
 
-
+```text
 subscription-billing-management/
 ├── accounts/
 ├── billing/
@@ -239,13 +238,16 @@ subscription-billing-management/
 ├── static/
 ├── subscriptions/
 ├── templates/
+│   ├── admin/
+│   └── customer/
 ├── .env.example
 ├── .gitignore
-├── Development_Progress_Tracker_Subscription_Billing_System.docx
+├── Development_Progress_Tracker_Subscription_Billing_System_Final.docx
 ├── SRS_Subscription_Billing_Management_System.docx
 ├── manage.py
 ├── README.md
 └── requirements.txt
+```
 
 
 ## 13. Additional Documentation
