@@ -5,42 +5,37 @@
 {% block content %}
 <section class="dashboard">
     <h1>Admin Dashboard</h1>
-    <p>Manage customers, subscription plans, payments, invoices and reports.</p>
+    <p>Manage customers, subscription plans, billing records and reports.</p>
 
     <div class="dashboard-grid">
-        <a class="dashboard-card" href="/admin/">
-            <h2>Django Administration</h2>
-            <p>Manage application data and users.</p>
+        <a class="dashboard-card" href="{% url 'accounts:admin_customers' %}">
+            <h2>Customer Management</h2>
+            <p>View and manage customer accounts.</p>
         </a>
 
-        <a class="dashboard-card" href="/api/plans/">
-            <h2>Subscription Plans</h2>
-            <p>View available plan records through the API.</p>
+        <a class="dashboard-card" href="{% url 'accounts:admin_plans' %}">
+            <h2>Plan Management</h2>
+            <p>Create, edit and manage subscription plans.</p>
         </a>
 
-        <a class="dashboard-card" href="/api/subscriptions/">
+        <a class="dashboard-card" href="{% url 'accounts:admin_subscriptions' %}">
             <h2>Subscriptions</h2>
-            <p>View subscription records through the API.</p>
+            <p>View subscriptions across all customers.</p>
         </a>
 
-        <a class="dashboard-card" href="/api/payments/">
+        <a class="dashboard-card" href="{% url 'accounts:admin_payments' %}">
             <h2>Payments</h2>
-            <p>View payment records through the API.</p>
+            <p>Review payment records and statuses.</p>
         </a>
 
-        <a class="dashboard-card" href="/api/invoices/">
+        <a class="dashboard-card" href="{% url 'accounts:admin_invoices' %}">
             <h2>Invoices</h2>
-            <p>View invoice records through the API.</p>
+            <p>View invoices across all customers.</p>
         </a>
 
-        <a class="dashboard-card" href="/api/reports/subscriptions/">
-            <h2>Subscription Reports</h2>
-            <p>View subscription counts by status.</p>
-        </a>
-
-        <a class="dashboard-card" href="/api/reports/revenue/">
-            <h2>Revenue Reports</h2>
-            <p>View revenue by plan and month.</p>
+        <a class="dashboard-card" href="{% url 'accounts:admin_reports' %}">
+            <h2>Reports</h2>
+            <p>Review subscription and revenue reports.</p>
         </a>
     </div>
 

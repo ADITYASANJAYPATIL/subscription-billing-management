@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}All Invoices | Subscription Billing{% endblock %}
+
+{% block content %}
+<section class="page-section">
+    <h1>Invoice Management</h1>
+    <p>View invoices across all customers.</p>
+
+    <p>
+        <a href="{% url 'admin_dashboard' %}">
+            &larr; Back to Admin Dashboard
+        </a>
+    </p>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Invoice ID</th>
+                    <th>Invoice Number</th>
+                    <th>Customer</th>
+                    <th>Subscription</th>
+                    <th>Plan</th>
+                    <th>Amount</th>
+                    <th>Issue Date</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for invoice in invoices %}
+                <tr>
+                    <td>{{ invoice.id }}</td>
+                    <td>{{ invoice.invoice_number }}</td>
+                    <td>{{ invoice.customer }}</td>
+                    <td>#{{ invoice.subscription_id }}</td>
+                    <td>{{ invoice.plan.name }}</td>
+                    <td>₹{{ invoice.amount }}</td>
+                    <td>{{ invoice.issue_date|date:"d M Y" }}</td>
+                    <td>{{ invoice.due_date|date:"d M Y" }}</td>
+                    <td>{{ invoice.status }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="9">No invoices found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

@@ -1,5 +1,4 @@
 from datetime import timedelta
-from decimal import Decimal
 
 from django.db import transaction
 from django.utils import timezone
@@ -26,6 +25,26 @@ def create_payment(
         payment_method=payment_method,
     )
 
+    # A successful payment must have a paid invoice.
+    if status == Payment.Status.SUCCESS:
+        invoice = (
+            Invoice.objects
+            .filter(
+                customer=customer,
+                subscription=subscription,
+                plan=subscription.plan,
+                status=Invoice.Status.PENDING,
+            )
+            .order_by("-issue_date")
+            .first()
+        )
+
+        if invoice is None:
+            invoice = create_invoice(subscription)
+
+        invoice.status = Invoice.Status.PAID
+        invoice.save(update_fields=["status"])
+
     return payment
 
 
@@ -36,12 +55,13 @@ def create_invoice(subscription):
     due_date = issue_date + timedelta(days=7)
 
     invoice = Invoice.objects.create(
-        invoice_number=f"INV-{timezone.now().strftime('%Y%m%d%H%M%S%f')}",
+        invoice_number=(
+            f"INV-{timezone.now().strftime('%Y%m%d%H%M%S%f')}"
+        ),
         customer=subscription.customer,
         subscription=subscription,
         plan=plan,
         amount=plan.price,
-        issue_date=issue_date,
         due_date=due_date,
         status=Invoice.Status.PENDING,
     )

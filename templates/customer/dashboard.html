@@ -8,28 +8,22 @@
     <p>Manage your subscription, payments and invoices.</p>
 
     <div class="dashboard-grid">
-        <a
-            class="dashboard-card"
-            href="{% url 'accounts:available_plans' %}"
-        >
+        <a class="dashboard-card" href="{% url 'accounts:available_plans' %}">
             <h2>Available Plans</h2>
             <p>View active subscription plans.</p>
         </a>
 
-        <a
-    class="dashboard-card"
-        href="{% url 'accounts:customer_subscriptions' %}"
-    >
+        <a class="dashboard-card" href="{% url 'accounts:customer_subscriptions' %}">
             <h2>My Subscriptions</h2>
             <p>View your subscriptions and their statuses.</p>
         </a>
 
-        <a class="dashboard-card" href="/api/payments/">
+        <a class="dashboard-card" href="{% url 'accounts:customer_payments' %}">
             <h2>My Payments</h2>
             <p>View your payment records.</p>
         </a>
 
-        <a class="dashboard-card" href="/api/invoices/">
+        <a class="dashboard-card" href="{% url 'accounts:customer_invoices' %}">
             <h2>My Invoices</h2>
             <p>View your invoices.</p>
         </a>
@@ -37,9 +31,7 @@
 
     <form method="post" action="{% url 'accounts:logout' %}">
         {% csrf_token %}
-        <button class="btn btn-primary" type="submit">
-            Log out
-        </button>
+        <button class="btn btn-primary" type="submit">Log out</button>
     </form>
 </section>
 {% endblock %}

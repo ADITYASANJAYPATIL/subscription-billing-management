@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}My Payments | Subscription Billing{% endblock %}
+
+{% block content %}
+<section class="page-section">
+    <h1>My Payments</h1>
+    <p>View your subscription payment records.</p>
+
+    <p>
+        <a href="{% url 'customer_dashboard' %}">Back to Dashboard</a>
+        |
+        <a href="{% url 'accounts:customer_subscriptions' %}">My Subscriptions</a>
+    </p>
+
+    {% if payments %}
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Reference</th>
+                        <th>Subscription</th>
+                        <th>Amount</th>
+                        <th>Payment Date</th>
+                        <th>Method</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in payments %}
+                        <tr>
+                            <td>{{ payment.transaction_reference }}</td>
+                            <td>#{{ payment.subscription_id }}</td>
+                            <td>₹{{ payment.amount|floatformat:2 }}</td>
+                            <td>{{ payment.payment_date|date:"d M Y, H:i" }}</td>
+                            <td>{{ payment.payment_method }}</td>
+                            <td>{{ payment.get_status_display }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No payment records found.</p>
+    {% endif %}
+</section>
+{% endblock %}

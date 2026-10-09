@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Reports | Subscription Billing{% endblock %}
+
+{% block content %}
+<section class="page-section">
+    <h1>Subscription and Revenue Reports</h1>
+    <p>Overview of subscription status and successful payment revenue.</p>
+
+    <p>
+        <a href="{% url 'admin_dashboard' %}">
+            &larr; Back to Admin Dashboard
+        </a>
+    </p>
+
+    <div class="dashboard-grid">
+        <div class="dashboard-card">
+            <h2>Total Subscriptions</h2>
+            <p>{{ total_subscriptions }}</p>
+        </div>
+    </div>
+
+    <h2>Subscriptions by Status</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Status</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in status_counts %}
+                <tr>
+                    <td>{{ item.status }}</td>
+                    <td>{{ item.count }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2">No subscription records found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2>Revenue by Plan</h2>
+    <p>Only successful payments are included.</p>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Plan</th>
+                    <th>Total Revenue</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in revenue_by_plan %}
+                <tr>
+                    <td>{{ item.subscription__plan__name }}</td>
+                    <td>₹{{ item.total_revenue|floatformat:2 }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2">No successful payment revenue found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2>Monthly Revenue</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Total Revenue</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in monthly_revenue %}
+                <tr>
+                    <td>{{ item.month|date:"F Y" }}</td>
+                    <td>₹{{ item.total_revenue|floatformat:2 }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2">No monthly revenue records found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

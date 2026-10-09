@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}My Invoices | Subscription Billing{% endblock %}
+
+{% block content %}
+<section class="page-section">
+    <h1>My Invoices</h1>
+    <p>View your subscription invoices.</p>
+
+    <p>
+        <a href="{% url 'customer_dashboard' %}">Back to Dashboard</a>
+        |
+        <a href="{% url 'accounts:customer_subscriptions' %}">My Subscriptions</a>
+    </p>
+
+    {% if invoices %}
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Invoice Number</th>
+                        <th>Subscription</th>
+                        <th>Plan</th>
+                        <th>Amount</th>
+                        <th>Issue Date</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for invoice in invoices %}
+                        <tr>
+                            <td>{{ invoice.invoice_number }}</td>
+                            <td>#{{ invoice.subscription_id }}</td>
+                            <td>{{ invoice.plan.name }}</td>
+                            <td>₹{{ invoice.amount|floatformat:2 }}</td>
+                            <td>{{ invoice.issue_date|date:"d M Y" }}</td>
+                            <td>{{ invoice.due_date|date:"d M Y" }}</td>
+                            <td>{{ invoice.get_status_display }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No invoices found.</p>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Customers | Subscription Billing{% endblock %}
+
+{% block content %}
+<section class="page-section">
+    <h1>Customer Management</h1>
+    <p>Create and view customer accounts.</p>
+
+    <p>
+        <a href="{% url 'admin_dashboard' %}">Back to Dashboard</a>
+    </p>
+
+    <h2>Add Customer</h2>
+
+    <form method="post" class="form-card">
+        {% csrf_token %}
+
+        <label for="username">Username *</label>
+        <input id="username" name="username" required>
+
+        <label for="email">Email *</label>
+        <input id="email" name="email" type="email" required>
+
+        <label for="first_name">First name</label>
+        <input id="first_name" name="first_name">
+
+        <label for="last_name">Last name</label>
+        <input id="last_name" name="last_name">
+
+        <label for="phone">Phone</label>
+        <input id="phone" name="phone">
+
+        <label for="password">Initial password *</label>
+        <input id="password" name="password" type="password"
+               minlength="8" required>
+
+        <button class="btn btn-primary" type="submit">
+            Create Customer
+        </button>
+    </form>
+
+    <h2>Customers</h2>
+
+    {% if customers %}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Account Status</th>
+                    <th>Joined</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                <tr>
+                    <td>{{ customer.user.username }}</td>
+                    <td>
+                        {{ customer.user.get_full_name|default:"—" }}
+                    </td>
+                    <td>{{ customer.user.email }}</td>
+                    <td>{{ customer.phone|default:"—" }}</td>
+                    <td>
+                        {% if customer.user.is_active %}
+                            Active
+                        {% else %}
+                            Inactive
+                        {% endif %}
+                    </td>
+                    <td>{{ customer.created_at|date:"d M Y" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <p>No customers found.</p>
+    {% endif %}
+</section>
+{% endblock %}

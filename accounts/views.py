@@ -13,6 +13,7 @@ def login_view(request):
         if request.user.groups.filter(name="Customer").exists():
             return redirect("customer_dashboard")
 
+        logout(request)
         messages.error(
             request,
             "Your account does not have an assigned application role.",
