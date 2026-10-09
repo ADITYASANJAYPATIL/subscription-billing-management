@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Subscription Details | Subscription Billing{% endblock %}
+
+{% block content %}
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <p class="message {{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+<section class="dashboard">
+    <h1>Subscription Details</h1>
+
+    <p>
+        <a href="{% url 'accounts:customer_subscriptions' %}">
+            Back to My Subscriptions
+        </a>
+    </p>
+
+    <article class="dashboard-card">
+        <h2>{{ subscription.plan.name }}</h2>
+
+        <p>Subscription ID: {{ subscription.id }}</p>
+        <p>Price: ₹{{ subscription.plan.price }}</p>
+        <p>
+            Billing cycle:
+            {{ subscription.plan.get_billing_cycle_display }}
+        </p>
+        <p>Status: {{ subscription.get_status_display }}</p>
+        <p>
+            Started: {{ subscription.start_date|date:"d M Y, H:i" }}
+        </p>
+
+        {% if subscription.end_date %}
+            <p>
+                Ended: {{ subscription.end_date|date:"d M Y, H:i" }}
+            </p>
+        {% endif %}
+    </article>
+
+    {% if subscription.status == "TRIAL" or subscription.status == "ACTIVE" %}
+        <h2>Change Plan</h2>
+
+        {% if available_plans %}
+            <form method="post"
+                  action="{% url 'accounts:customer_subscription_detail' subscription.pk %}">
+                {% csrf_token %}
+
+                <label for="plan">Select a target plan</label>
+
+                <select id="plan" name="plan" required>
+                    <option value="">Choose a plan</option>
+
+                    {% for plan in available_plans %}
+                        <option value="{{ plan.id }}">
+                            {{ plan.name }} — ₹{{ plan.price }}
+                            / {{ plan.get_billing_cycle_display }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <p>
+                    <button
+                        class="btn btn-primary"
+                        type="submit"
+                        name="action"
+                        value="upgrade">
+                        Upgrade
+                    </button>
+
+                    <button
+                        class="btn btn-primary"
+                        type="submit"
+                        name="action"
+                        value="downgrade">
+                        Downgrade
+                    </button>
+                </p>
+            </form>
+        {% else %}
+            <p>No other active plans are available.</p>
+        {% endif %}
+
+        <h2>Cancel Subscription</h2>
+
+        <form method="post"
+              action="{% url 'accounts:customer_subscription_detail' subscription.pk %}"
+              onsubmit="return confirm('Cancel this subscription immediately?');">
+            {% csrf_token %}
+            <button
+                class="btn btn-primary"
+                type="submit"
+                name="action"
+                value="cancel">
+                Cancel Subscription
+            </button>
+        </form>
+    {% endif %}
+
+    <h2>Subscription History</h2>
+
+    {% if history %}
+        <div class="dashboard-grid">
+            {% for item in history %}
+                <article class="dashboard-card">
+                    <h3>{{ item.get_action_display }}</h3>
+                    <p>{{ item.created_at|date:"d M Y, H:i" }}</p>
+
+                    {% if item.previous_plan %}
+                        <p>Previous plan: {{ item.previous_plan.name }}</p>
+                    {% endif %}
+
+                    {% if item.new_plan %}
+                        <p>New plan: {{ item.new_plan.name }}</p>
+                    {% endif %}
+
+                    {% if item.details %}
+                        <p>{{ item.details }}</p>
+                    {% endif %}
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No subscription history is available.</p>
+    {% endif %}
+</section>
+{% endblock %}

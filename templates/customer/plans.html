@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Available Plans | Subscription Billing{% endblock %}
+
+{% block content %}
+<section class="plans-page">
+    <h1>Available Subscription Plans</h1>
+    <p>Choose an active subscription plan.</p>
+
+    <p>
+        <a href="{% url 'customer_dashboard' %}">
+            Back to Dashboard
+        </a>
+    </p>
+
+    {% if plans %}
+        <div class="plan-grid">
+            {% for plan in plans %}
+                <article class="plan-card">
+                    <h2>{{ plan.name }}</h2>
+
+                    {% if plan.description %}
+                        <p>{{ plan.description }}</p>
+                    {% endif %}
+
+                    <p class="plan-price">
+                        ₹{{ plan.price }}
+                    </p>
+
+                    <p>
+                        Billing cycle:
+                        {{ plan.get_billing_cycle_display }}
+                    </p>
+
+                    <p class="plan-status">Available</p>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No active subscription plans are available.</p>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard | Subscription Billing{% endblock %}
+
+{% block content %}
+<section class="dashboard">
+    <h1>Admin Dashboard</h1>
+    <p>Manage customers, subscription plans, payments, invoices and reports.</p>
+
+    <div class="dashboard-grid">
+        <a class="dashboard-card" href="/admin/">
+            <h2>Django Administration</h2>
+            <p>Manage application data and users.</p>
+        </a>
+
+        <a class="dashboard-card" href="/api/plans/">
+            <h2>Subscription Plans</h2>
+            <p>View available plan records through the API.</p>
+        </a>
+
+        <a class="dashboard-card" href="/api/subscriptions/">
+            <h2>Subscriptions</h2>
+            <p>View subscription records through the API.</p>
+        </a>
+
+        <a class="dashboard-card" href="/api/payments/">
+            <h2>Payments</h2>
+            <p>View payment records through the API.</p>
+        </a>
+
+        <a class="dashboard-card" href="/api/invoices/">
+            <h2>Invoices</h2>
+            <p>View invoice records through the API.</p>
+        </a>
+
+        <a class="dashboard-card" href="/api/reports/subscriptions/">
+            <h2>Subscription Reports</h2>
+            <p>View subscription counts by status.</p>
+        </a>
+
+        <a class="dashboard-card" href="/api/reports/revenue/">
+            <h2>Revenue Reports</h2>
+            <p>View revenue by plan and month.</p>
+        </a>
+    </div>
+
+    <form method="post" action="{% url 'accounts:logout' %}">
+        {% csrf_token %}
+        <button class="btn btn-primary" type="submit">Log out</button>
+    </form>
+</section>
+{% endblock %}

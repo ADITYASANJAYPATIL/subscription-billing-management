@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}My Subscriptions | Subscription Billing{% endblock %}
+
+{% block content %}
+<section class="dashboard">
+    <h1>My Subscriptions</h1>
+    <p>View your subscription plans and their current statuses.</p>
+
+    <p>
+        <a href="{% url 'customer_dashboard' %}">
+            Back to Dashboard
+        </a>
+        |
+        <a href="{% url 'accounts:available_plans' %}">
+            Available Plans
+        </a>
+    </p>
+
+    {% if subscriptions %}
+        <div class="dashboard-grid">
+            {% for subscription in subscriptions %}
+                <article class="dashboard-card">
+                    <h2>{{ subscription.plan.name }}</h2>
+
+                    <p>
+                        Price: ₹{{ subscription.plan.price }}
+                    </p>
+
+                    <p>
+                        Billing cycle:
+                        {{ subscription.plan.get_billing_cycle_display }}
+                    </p>
+
+                    <p>
+                        Status:
+                        {{ subscription.get_status_display }}
+                    </p>
+
+                    <p>
+                        Started: {{ subscription.start_date|date:"d M Y, H:i" }}
+                    </p>
+
+                    {% if subscription.end_date %}
+                        <p>
+                            Ended: {{ subscription.end_date|date:"d M Y, H:i" }}
+                        </p>
+                    {% endif %}
+
+                    <a href="{% url 'accounts:customer_subscription_detail' subscription.pk %}">
+                        View Details and History
+                    </a>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You do not have any subscriptions yet.</p>
+
+        <a class="btn btn-primary"
+           href="{% url 'accounts:available_plans' %}">
+            Browse Plans
+        </a>
+    {% endif %}
+</section>
+{% endblock %}
